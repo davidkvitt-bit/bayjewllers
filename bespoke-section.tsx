@@ -1,44 +1,35 @@
-"use client"
+import { Header } from "@/components/header"
+import { Hero } from "@/components/hero"
+import { TrustBadges } from "@/components/trust-badges"
+import { Collections } from "@/components/collections"
+import { FeaturedProducts } from "@/components/featured-products"
+import { MaterialsSection } from "@/components/materials-section"
+import { BespokeSection } from "@/components/bespoke-section"
+import { StorySection } from "@/components/story-section"
+import { Testimonials } from "@/components/testimonials"
+import { InstagramFeed } from "@/components/instagram-feed"
+import { Footer } from "@/components/footer"
+import { FloatingContact } from "@/components/floating-contact"
+import { PromoBanner } from "@/components/promo-banner"
 
-import { useState } from "react"
-import Link from "next/link"
-import { MessageCircle, Phone, X, ChevronUp } from "lucide-react"
-
-export function FloatingContact() {
-  const [expanded, setExpanded] = useState(false)
-
+export default function Home() {
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-      {/* Expanded buttons */}
-      {expanded && (
-        <>
-          <Link
-            href="https://wa.me/442088029596?text=Hello%20Bay%20Jewellers,%20I%27d%20like%20to%20enquire%20about..."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3 bg-[#25D366] text-white px-4 py-3 shadow-lg hover:bg-[#1db954] transition-colors text-sm tracking-wide"
-          >
-            <MessageCircle className="h-4 w-4" />
-            <span>WhatsApp Us</span>
-          </Link>
-          <Link
-            href="tel:+442088029596"
-            className="flex items-center gap-3 bg-foreground text-background px-4 py-3 shadow-lg hover:bg-foreground/90 transition-colors text-sm tracking-wide"
-          >
-            <Phone className="h-4 w-4" />
-            <span>020 8802 9596</span>
-          </Link>
-        </>
-      )}
-
-      {/* Toggle button */}
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="w-12 h-12 rounded-full bg-foreground text-background shadow-lg hover:bg-foreground/90 transition-all flex items-center justify-center"
-        aria-label={expanded ? "Close contact menu" : "Contact us"}
-      >
-        {expanded ? <X className="h-5 w-5" /> : <MessageCircle className="h-5 w-5" />}
-      </button>
-    </div>
+    <>
+      <PromoBanner />
+      <Header />
+      <main>
+        <Hero />
+        <TrustBadges />
+        <Collections />
+        <FeaturedProducts />
+        <MaterialsSection />
+        <BespokeSection />
+        <StorySection />
+        <Testimonials />
+        <InstagramFeed />
+      </main>
+      <Footer />
+      <FloatingContact />
+    </>
   )
 }

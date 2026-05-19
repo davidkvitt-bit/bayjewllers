@@ -2,138 +2,103 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ArrowRight, ChevronDown } from "lucide-react"
 
-const testimonials = [
+const slides = [
   {
-    quote: "From the moment we walked in, we felt welcomed. The team helped us find the perfect wedding bands. The craftsmanship is exceptional, and the service was personal and attentive.",
-    author: "Emma & James",
-    location: "London",
-    image: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=200&h=200&fit=crop&q=80",
-    rating: 5,
+    title: "Crafted for Forever",
+    subtitle: "Wedding Rings",
+    description: "Handcrafted in precious metals, designed to symbolise your eternal love",
+    cta: "Explore Wedding Rings",
+    image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=1920&h=1080&fit=crop&q=80",
   },
   {
-    quote: "I inherited my grandfather's signet ring and Bay Jewellers restored it beautifully while preserving its character. They truly understand the sentimental value of jewellery.",
-    author: "William T.",
-    location: "Cambridge",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&q=80",
-    rating: 5,
+    title: "Heritage in Gold",
+    subtitle: "Signet Rings",
+    description: "Traditional craftsmanship meets contemporary design",
+    cta: "Discover Signets",
+    image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1920&h=1080&fit=crop&q=80",
   },
   {
-    quote: "The bespoke engagement ring they created exceeded all my expectations. The attention to detail and patience throughout the design process was remarkable.",
-    author: "Sarah M.",
-    location: "Manchester",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&q=80",
-    rating: 5,
-  },
-  {
-    quote: "Outstanding quality and service. They took the time to explain every option and helped us find rings within our budget without compromising on quality.",
-    author: "David & Michael",
-    location: "Brighton",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&q=80",
-    rating: 5,
+    title: "Say Yes",
+    subtitle: "Engagement Rings",
+    description: "Begin your journey with a ring as unique as your love story",
+    cta: "View Engagement",
+    image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?w=1920&h=1080&fit=crop&q=80",
   },
 ]
 
-export function Testimonials() {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isAnimating, setIsAnimating] = useState(false)
+export function Hero() {
+  const [currentSlide, setCurrentSlide] = useState(0)
 
-  const go = (next: number) => {
-    if (isAnimating) return
-    setIsAnimating(true)
-    setTimeout(() => {
-      setCurrentIndex(next)
-      setIsAnimating(false)
-    }, 200)
-  }
-
-  const next = () => go((currentIndex + 1) % testimonials.length)
-  const prev = () => go((currentIndex - 1 + testimonials.length) % testimonials.length)
-
-  // Auto-advance
   useEffect(() => {
-    const t = setInterval(next, 7000)
-    return () => clearInterval(t)
-  }, [currentIndex])
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length)
+    }, 6000)
+    return () => clearInterval(timer)
+  }, [])
 
-  const t = testimonials[currentIndex]
+  const slide = slides[currentSlide]
 
   return (
-    <section className="py-20 md:py-32 bg-secondary">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 md:mb-16">
-          <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-4">Testimonials</p>
-          <h2 className="text-3xl md:text-4xl font-light tracking-tight">Words from Our Clients</h2>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Images */}
+      {slides.map((s, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            index === currentSlide ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <Image
+            src={s.image}
+            alt={s.title}
+            fill
+            className="object-cover"
+            priority={index === 0}
+          />
+          <div className="absolute inset-0 bg-black/40" />
         </div>
+      ))}
 
-        <div className="relative bg-card p-8 md:p-12 text-center">
-          <Quote className="h-8 w-8 text-muted-foreground mx-auto mb-6 opacity-20" />
-
-          <div className={`transition-opacity duration-200 ${isAnimating ? "opacity-0" : "opacity-100"}`}>
-            {/* Stars */}
-            <div className="flex justify-center gap-1 mb-6">
-              {Array.from({ length: t.rating }).map((_, i) => (
-                <span key={i} className="text-foreground text-sm">★</span>
-              ))}
-            </div>
-
-            <blockquote className="text-lg md:text-xl font-light leading-relaxed mb-8 text-pretty">
-              &ldquo;{t.quote}&rdquo;
-            </blockquote>
-
-            <div className="flex flex-col items-center gap-3">
-              <Image
-                src={t.image}
-                alt={t.author}
-                width={56}
-                height={56}
-                className="rounded-full object-cover"
-              />
-              <div>
-                <p className="font-medium">{t.author}</p>
-                <p className="text-sm text-muted-foreground">{t.location}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-center gap-4 mt-10">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={prev}
-              className="rounded-full hover:bg-primary hover:text-primary-foreground hover:border-primary"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={next}
-              className="rounded-full hover:bg-primary hover:text-primary-foreground hover:border-primary"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-
-          <div className="flex justify-center gap-2 mt-6">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => go(index)}
-                className={`h-1 rounded-full transition-all duration-300 ${
-                  index === currentIndex ? "w-8 bg-foreground" : "w-2 bg-border hover:bg-muted-foreground"
-                }`}
-                aria-label={`Go to testimonial ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-
-        <p className="text-center text-sm text-muted-foreground mt-8">
-          4.9 / 5 based on 620+ verified Google reviews
+      {/* Content */}
+      <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
+        <p className="text-sm md:text-base tracking-[0.3em] uppercase mb-4 md:mb-6 text-white/70 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          {slide.subtitle}
         </p>
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight mb-6 md:mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150 text-balance">
+          {slide.title}
+        </h1>
+        <p className="text-lg md:text-xl font-light mb-8 md:mb-12 max-w-2xl mx-auto opacity-90 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300 text-pretty">
+          {slide.description}
+        </p>
+        <Button 
+          size="lg" 
+          className="bg-white text-foreground hover:bg-white/90 tracking-wider text-sm px-8 py-6 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500"
+        >
+          {slide.cta}
+          <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
+
+        {/* Slide indicators */}
+        <div className="flex justify-center gap-3 mt-12 md:mt-16">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`h-0.5 transition-all duration-300 ${
+                index === currentSlide ? "w-8 bg-white" : "w-4 bg-white/50 hover:bg-white/70"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
+        <ChevronDown className="h-6 w-6 text-white/70" />
       </div>
     </section>
   )

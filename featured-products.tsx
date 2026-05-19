@@ -1,142 +1,66 @@
 "use client"
 
-import { useState } from "react"
-import Link from "next/link"
-import { Menu, X, ShoppingBag, Search, Heart } from "lucide-react"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { useCart } from "@/hooks/use-cart"
-import { useWishlist } from "@/hooks/use-wishlist"
-import { CartDrawer } from "@/components/cart-drawer"
-import { SearchDialog } from "@/components/search-dialog"
+import { ArrowRight } from "lucide-react"
 
-const navigation = [
-  { name: "Wedding Rings", href: "#collections" },
-  { name: "Engagement", href: "#collections" },
-  { name: "Signet Rings", href: "#collections" },
-  { name: "Bespoke", href: "#bespoke" },
-  { name: "Our Story", href: "#story" },
-]
-
-export function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [cartOpen, setCartOpen] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
-  const { totalItems } = useCart()
-  const { count: wishlistCount } = useWishlist()
-
+export function BespokeSection() {
   return (
-    <>
-      <header className="sticky top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-        <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 md:h-20 items-center justify-between">
+    <section id="bespoke" className="py-20 md:py-32 bg-background">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
+          {/* Image */}
+          <div className="relative aspect-[4/5] md:aspect-square overflow-hidden order-2 md:order-1">
+            <Image
+              src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&h=1000&fit=crop&q=80"
+              alt="Master craftsman at work"
+              fill
+              className="object-cover"
+            />
+          </div>
 
-            {/* Mobile menu button */}
-            <div className="flex md:hidden">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="hover:bg-transparent"
-                onClick={() => setMobileOpen(true)}
-              >
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Open menu</span>
-              </Button>
+          {/* Content */}
+          <div className="order-1 md:order-2">
+            <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-4">Bespoke Service</p>
+            <h2 className="text-3xl md:text-5xl font-light tracking-tight mb-6 text-balance">
+              Your Vision, <br />
+              <span className="italic">Our Craft</span>
+            </h2>
+            <div className="space-y-4 text-muted-foreground leading-relaxed mb-8">
+              <p>
+                Every love story is unique, and your ring should be too. Our master craftsmen bring 
+                over four decades of experience to create bespoke pieces that capture your personal journey.
+              </p>
+              <p>
+                From initial consultation to final polish, we work closely with you to design and 
+                handcraft a ring that will be treasured for generations.
+              </p>
             </div>
 
-            {/* Logo */}
-            <Link href="/" className="flex-1 md:flex-none text-center md:text-left">
-              <span className="text-lg md:text-xl tracking-[0.15em] md:tracking-[0.2em] font-light">
-                BAY JEWELLERS
-              </span>
-            </Link>
-
-            {/* Desktop navigation */}
-            <div className="hidden md:flex md:items-center md:gap-8 lg:gap-12">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="text-sm tracking-wider font-light hover:text-muted-foreground transition-colors uppercase"
-                >
-                  {item.name}
-                </Link>
+            {/* Process steps */}
+            <div className="grid grid-cols-3 gap-4 mb-10">
+              {[
+                { step: "01", label: "Consult" },
+                { step: "02", label: "Design" },
+                { step: "03", label: "Craft" },
+              ].map((item) => (
+                <div key={item.step} className="text-center">
+                  <p className="text-2xl md:text-3xl font-light text-muted-foreground mb-1">{item.step}</p>
+                  <p className="text-sm tracking-wider uppercase">{item.label}</p>
+                </div>
               ))}
             </div>
 
-            {/* Actions */}
-            <div className="flex items-center gap-2 md:gap-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="hidden md:flex hover:bg-transparent"
-                onClick={() => setSearchOpen(true)}
-              >
-                <Search className="h-5 w-5" />
-                <span className="sr-only">Search</span>
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="hidden md:flex hover:bg-transparent relative"
-                onClick={() => {}}
-              >
-                <Heart className="h-5 w-5" />
-                {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-foreground text-background text-[10px] flex items-center justify-center">
-                    {wishlistCount}
-                  </span>
-                )}
-                <span className="sr-only">Wishlist</span>
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="hover:bg-transparent relative"
-                onClick={() => setCartOpen(true)}
-              >
-                <ShoppingBag className="h-5 w-5" />
-                {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-foreground text-background text-[10px] flex items-center justify-center">
-                    {totalItems}
-                  </span>
-                )}
-                <span className="sr-only">Cart</span>
-              </Button>
-            </div>
-          </div>
-        </nav>
-      </header>
-
-      {/* Mobile menu overlay */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-[60] bg-background flex flex-col p-8">
-          <div className="flex justify-between items-center mb-12">
-            <span className="text-lg tracking-[0.2em] font-light">BAY JEWELLERS</span>
-            <Button variant="ghost" size="icon" onClick={() => setMobileOpen(false)}>
-              <X className="h-5 w-5" />
+            <Button 
+              size="lg" 
+              className="bg-primary text-primary-foreground hover:bg-primary/90 tracking-wider text-sm px-8"
+            >
+              Book Consultation
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
-          <nav className="flex flex-col gap-6">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className="text-2xl font-light tracking-wide border-b border-border pb-4 hover:text-muted-foreground transition-colors"
-              >
-                {item.name}
-              </Link>
-            ))}
-          </nav>
-          <div className="mt-auto">
-            <p className="text-sm text-muted-foreground mb-2">Contact Us</p>
-            <a href="tel:+442088029596" className="text-lg font-light">020 8802 9596</a>
-          </div>
         </div>
-      )}
-
-      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
-      <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />
-    </>
+      </div>
+    </section>
   )
 }

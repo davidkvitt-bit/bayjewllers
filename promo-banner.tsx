@@ -1,97 +1,91 @@
 "use client"
 
-import { useState } from "react"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
+import Link from "next/link"
+import { Instagram } from "lucide-react"
 
-const materials = [
+const instagramPosts = [
   {
-    name: "Platinum",
-    description: "The rarest and most precious metal. Naturally white, hypoallergenic, and eternally lustrous. Platinum holds diamonds more securely than any other metal and grows more beautiful with age.",
-    image: "https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=800&h=600&fit=crop&q=80",
-    starting: "£595",
-    facts: ["95% pure", "Naturally white", "Hypoallergenic"],
+    image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&h=400&fit=crop&q=80",
+    likes: 234,
+    href: "https://instagram.com",
   },
   {
-    name: "18ct Gold",
-    description: "Timeless elegance in yellow, white, or rose. At 75% pure gold, 18ct strikes the perfect balance of richness and durability — the most popular choice for engagement and wedding rings.",
-    image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=600&fit=crop&q=80",
-    starting: "£395",
-    facts: ["75% pure gold", "Yellow, white & rose", "Most popular choice"],
+    image: "https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=400&h=400&fit=crop&q=80",
+    likes: 189,
+    href: "https://instagram.com",
   },
   {
-    name: "Titanium",
-    description: "Lightweight, hypoallergenic, and incredibly strong — titanium is perfect for those with active lifestyles. Modern luxury for the contemporary wearer who values durability without compromise.",
-    image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&h=600&fit=crop&q=80",
-    starting: "£195",
-    facts: ["Virtually indestructible", "Featherlight", "Hypoallergenic"],
+    image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&h=400&fit=crop&q=80",
+    likes: 312,
+    href: "https://instagram.com",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=400&h=400&fit=crop&q=80",
+    likes: 276,
+    href: "https://instagram.com",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=400&h=400&fit=crop&q=80",
+    likes: 198,
+    href: "https://instagram.com",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?w=400&h=400&fit=crop&q=80",
+    likes: 245,
+    href: "https://instagram.com",
   },
 ]
 
-export function MaterialsSection() {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const material = materials[activeIndex]
-
+export function InstagramFeed() {
   return (
     <section className="py-20 md:py-32 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section header */}
         <div className="text-center mb-12 md:mb-16">
-          <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-4">Materials</p>
-          <h2 className="text-3xl md:text-4xl font-light tracking-tight">Precious Metals</h2>
+          <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-4">Follow Us</p>
+          <h2 className="text-3xl md:text-4xl font-light tracking-tight mb-4">
+            @bayjewellers
+          </h2>
+          <p className="text-muted-foreground">
+            Share your Bay Jewellers moments with #BayJewellers
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
-          <div className="relative aspect-[4/3] overflow-hidden">
-            {materials.map((m, i) => (
-              <div
-                key={m.name}
-                className={`absolute inset-0 transition-opacity duration-500 ${i === activeIndex ? "opacity-100" : "opacity-0"}`}
-              >
-                <Image src={m.image} alt={m.name} fill className="object-cover" />
+        {/* Instagram grid */}
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-1 md:gap-2">
+          {instagramPosts.map((post, index) => (
+            <Link
+              key={index}
+              href={post.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative aspect-square overflow-hidden"
+            >
+              <Image
+                src={post.image}
+                alt={`Instagram post ${index + 1}`}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+                <Instagram className="h-6 w-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-            ))}
-          </div>
+            </Link>
+          ))}
+        </div>
 
-          <div>
-            {/* Tabs */}
-            <div className="flex gap-4 mb-8 border-b border-border">
-              {materials.map((m, index) => (
-                <button
-                  key={m.name}
-                  onClick={() => setActiveIndex(index)}
-                  className={`text-sm tracking-wider uppercase pb-3 border-b-2 -mb-px transition-colors ${
-                    index === activeIndex
-                      ? "border-foreground text-foreground"
-                      : "border-transparent text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {m.name}
-                </button>
-              ))}
-            </div>
-
-            <h3 className="text-2xl md:text-3xl font-light mb-4">{material.name}</h3>
-            <p className="text-muted-foreground leading-relaxed mb-6">{material.description}</p>
-
-            <div className="flex gap-6 mb-8">
-              {material.facts.map((fact) => (
-                <div key={fact} className="text-center">
-                  <div className="w-px h-4 bg-border mx-auto mb-2" />
-                  <p className="text-xs tracking-wider text-muted-foreground uppercase">{fact}</p>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-sm text-muted-foreground mb-8">
-              Starting from <span className="text-foreground font-medium text-base">{material.starting}</span>
-            </p>
-
-            <Button variant="outline" className="tracking-wider text-sm">
-              Explore {material.name} Rings
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
+        {/* Follow button */}
+        <div className="text-center mt-10">
+          <Link
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm tracking-wider uppercase hover:text-muted-foreground transition-colors"
+          >
+            <Instagram className="h-4 w-4" />
+            Follow on Instagram
+          </Link>
         </div>
       </div>
     </section>
